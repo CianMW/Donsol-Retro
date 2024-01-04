@@ -1,0 +1,15 @@
+.mainMenuWrapper{
+    width:400px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+
+}
+
+.buttonContainer{
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+
+}

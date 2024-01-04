@@ -1,0 +1,10 @@
+.donsolWrapper{
+    width:98%;
+    height:94vh;
+}
+
+.mainContent{
+    display:flex;
+    justify-content:center;
+    overflow:hidden;
+}
