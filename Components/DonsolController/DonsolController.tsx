@@ -1,10 +1,11 @@
 'use client'
+import { useState } from 'react'
 import { MainMenu } from '../MainMenu.tsx/MainMenu'
 import styles from './DonsolController.module.css'
 
 
 export function DonsolController(){
-
+const [cardState, setCardState]=useState<boolean>(true)
     function quitApplication(){
 
     }
@@ -24,6 +25,10 @@ export function DonsolController(){
         
         <div className={`window-pane ${styles.mainContent}`}>
             <MainMenu/>
+            <img onClick={()=> setCardState(!cardState)}src={`${cardState ? '/cards/Clubs/Clubs_card_01.png': '/cards/Backs/back_0.png'}`} width={'80px'} height={'160px'} style={{cursor:'pointer'}}/>
+            <img src={'/cards/Clubs/Clubs_card_01.png'} width={'80px'} height={'160px'} />
+            <img src={'/cards/Clubs/Clubs_card_01.png'} width={'80px'} height={'160px'} />
+            <img src={'/cards/Clubs/Clubs_card_01.png'} width={'80px'} height={'160px'} />
         </div>
     </div>
     )
