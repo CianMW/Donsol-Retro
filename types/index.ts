@@ -5,6 +5,7 @@ export type GameMode = 'Easy' | 'Normal' | 'Hard';
 
 export interface Card {
     suit: Suit;
-    value: Value;
-    imageLink:string;
+    value: number;
+    imageUrl:string;
   }
+
