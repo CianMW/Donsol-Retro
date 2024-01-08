@@ -1,0 +1,23 @@
+.matWrapper{
+    min-width:400px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+
+}
+
+.rowWrapper{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    gap:20px;
+}
+
+.activeRoomContainer{
+    display:flex;
+    flex-direction:row;
+    gap:12px;
+    justify-content:center;
+}

@@ -1,25 +1,17 @@
 "use client"
-import { Card, GameMode } from '@/types';
+import { Card, GameData, GameMode } from '@/types';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-interface GameData {
-  deck: Card[];
-  playerHealth: number;
-  equippedShield: number | null;
-  previousShieldValue: number | null;
-  isPreviousRoomEscaped: boolean;
-  gameMode: GameMode;
-  updateGameData: (gameData: GameData) => void;
-}
-
 const defaultGameData: GameData = {
-  deck: [], // You'll need to initialize this with a function
+  deck: [],
+  currentRoom:[],
   playerHealth: 21,
   equippedShield: null,
   previousShieldValue: null,
   isPreviousRoomEscaped: false,
-  gameMode: 'Easy', // Default game mode
-  updateGameData: () => {}
+  gameMode: 'Easy',
+  updateGameData: () => {},
+  gameStatus: false
 };
 
 function getLocalStorage(key: string, initialValue: any) {
@@ -52,8 +44,8 @@ export const GameProvider = ({ children }: any) => {
   }, []);
 
   const updateGameData = (newGameData: GameData) => {
-    setGameData(newGameData);
-    setLocalStorage('gameData', newGameData);
+    setGameData({...gameData, ...newGameData});
+    setLocalStorage('gameData', {...gameData, ...newGameData});
   };
 
   return (

@@ -1,4 +1,4 @@
-import { Card, Suit } from "@/types";
+import { Card, GameData, GameMode, Suit } from "@/types";
 
 // Idea here is to create a suite of pure functions 
 
@@ -8,7 +8,7 @@ export function createDeck(): Card[] {
     const suits: Suit[] = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
     for (const suit of suits) {
       for (let value = 1; value <= 13; value++) {
-        deck.push({ suit, value, imageUrl:`/cards/${suit}/${suit}_${value.toLocaleString('en-US', {
+        deck.push({ suit, value, imageUrl:`/cards/${suit}/${suit}_card_${value.toLocaleString('en-US', {
           minimumIntegerDigits: 2,
           useGrouping: false
         })}.png` });
@@ -30,8 +30,22 @@ export function createDeck(): Card[] {
   }
   
 // TBC may need updating for check in context if hard mode is active
-  export function drawRoom(deck: Card[]): [Card[], Card[]] {
+  export function drawRoom(deck: Card[]): {room:Card[], remainingDeck:Card[]} {
     const room = deck.slice(0, 4);
     const remainingDeck = deck.slice(4);
-    return [room, remainingDeck];
+    return {room, remainingDeck};
   }
+
+export function initialiseGame(gameData:GameData):GameData{
+  const {room:firstRoom, remainingDeck} = drawRoom(shuffleDeck(createDeck()))
+  gameData.deck = remainingDeck;
+  gameData.playerHealth = 21;
+  gameData.equippedShield = null;
+  gameData.previousShieldValue = null;
+  gameData.isPreviousRoomEscaped = false;
+  gameData.gameStatus = true;
+  gameData.currentRoom = firstRoom;
+  gameData.updateGameData(gameData);
+
+  return gameData
+}
