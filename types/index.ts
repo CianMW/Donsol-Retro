@@ -13,12 +13,13 @@ export interface Card {
 
   export interface GameData {
     deck: Card[];
-    currentRoom:Card[];
+    currentRoom:Array<Card|null>;
     playerHealth: number;
     equippedShield: number | null;
     previousShieldValue: number | null;
     isPreviousRoomEscaped: boolean;
     gameMode: GameMode;
-    updateGameData: (gameData: GameData) => void;
-    gameStatus:boolean
+    updateGameData: (gameData: Partial<GameData>) => void;
+    gameStatus:'menu'|'play'|'win'|'lose';
+    potionUsedPreviously:boolean;
   }

@@ -43,9 +43,59 @@ export function initialiseGame(gameData:GameData):GameData{
   gameData.equippedShield = null;
   gameData.previousShieldValue = null;
   gameData.isPreviousRoomEscaped = false;
-  gameData.gameStatus = true;
+  gameData.gameStatus = 'play';
   gameData.currentRoom = firstRoom;
+  gameData.potionUsedPreviously =false;
   gameData.updateGameData(gameData);
 
   return gameData
+}
+
+
+// Function to handle potion cards (Hearts)
+export function handlePotion(potionUsedPreviously:boolean,card: Card, playerHealth: number): Partial<GameData> {
+  if (!potionUsedPreviously) {
+    return{
+      playerHealth: Math.min(playerHealth + getCardValue(card), 21),
+      potionUsedPreviously:true
+    }
+  }
+  return {playerHealth:playerHealth};
+}
+
+
+// Gets the value of the card
+export function getCardValue(card: Card, isMonster: boolean = false): number {
+  if (card.suit === 'Joker') {
+    return 21;
+  }
+  interface faceCardObject {
+   [key:string]:number
+  }
+  const faceCardValues:faceCardObject = isMonster ? { '11': 11, '12': 13, '13': 15, '1': 17 } : { '11': 11, '12': 11, '13': 11, '1': 11 };
+  return card.value > 10 || card.value === 1 ? faceCardValues[`${card.value}`] : card.value;
+}
+
+
+export function handleMonster(card: Card, playerHealth: number, equippedShield: number | null): Partial<GameData> {
+  const monsterValue = getCardValue(card, true);
+  const damage = equippedShield !== null ? Math.max(monsterValue - equippedShield, 0) : monsterValue;
+  return {playerHealth:Math.max(playerHealth - damage,0)};
+}
+
+
+// Function to handle shield cards (Diamonds)
+export function handleShield(card: Card, equippedShield: number | null, previousShieldValue: number | null): Partial<GameData> {
+  const shieldValue = getCardValue(card);
+  if (previousShieldValue !== null && shieldValue >= previousShieldValue) {
+    // Shield breaks, player is unarmored
+    return {equippedShield:null,
+    previousShieldValue:null}
+  }
+  // Update the previous shield value for next shield card encounter
+  return{
+    previousShieldValue: shieldValue,
+    equippedShield:shieldValue
+  }
+
 }

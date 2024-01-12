@@ -11,7 +11,8 @@ const defaultGameData: GameData = {
   isPreviousRoomEscaped: false,
   gameMode: 'Easy',
   updateGameData: () => {},
-  gameStatus: false
+  gameStatus: 'menu',
+  potionUsedPreviously:false
 };
 
 function getLocalStorage(key: string, initialValue: any) {
@@ -43,7 +44,7 @@ export const GameProvider = ({ children }: any) => {
     setGameData(savedGameData);
   }, []);
 
-  const updateGameData = (newGameData: GameData) => {
+  const updateGameData = (newGameData: Partial<GameData>) => {
     setGameData({...gameData, ...newGameData});
     setLocalStorage('gameData', {...gameData, ...newGameData});
   };

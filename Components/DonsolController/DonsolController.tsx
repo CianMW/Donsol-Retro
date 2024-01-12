@@ -19,22 +19,23 @@ export function DonsolController() {
     previousShieldValue,
     isPreviousRoomEscaped,
     gameMode,
-    gameStatus
+    gameStatus,
+    potionUsedPreviously
   } = useContext(GameContext);
 
-  function startNewGame(){
-
- initialiseGame({
-        deck: deck,
-        currentRoom:currentRoom,
-        playerHealth: playerHealth,
-        equippedShield: equippedShield,
-        previousShieldValue: previousShieldValue,
-        isPreviousRoomEscaped: isPreviousRoomEscaped,
-        gameMode: gameMode,
-        updateGameData:updateGameData,
-        gameStatus:gameStatus
- })
+  function startNewGame() {
+    initialiseGame({
+      deck: deck,
+      currentRoom: currentRoom,
+      playerHealth: playerHealth,
+      equippedShield: equippedShield,
+      previousShieldValue: previousShieldValue,
+      isPreviousRoomEscaped: isPreviousRoomEscaped,
+      gameMode: gameMode,
+      updateGameData: updateGameData,
+      gameStatus: gameStatus,
+      potionUsedPreviously:potionUsedPreviously
+    });
   }
 
   return (
@@ -56,12 +57,9 @@ export function DonsolController() {
       <div className="separator"></div>
 
       <div className={`window-pane ${styles.mainContent}`}>
-        {gameStatus ?
-        <GameMat />
-        :
-        <MainMenu startNewGame={startNewGame} />
-
-    }
+        {gameStatus === 'play' && <GameMat />}
+        {gameStatus==='menu' && <MainMenu startNewGame={startNewGame} />}
+        {/* {gameStatus ===} */}
       </div>
     </div>
   );
