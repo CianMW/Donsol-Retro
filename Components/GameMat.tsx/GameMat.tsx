@@ -38,6 +38,11 @@ const [nextRoomDisabled, setNextRoomDisabled]= useState<boolean>(true)
 
   }, [currentRoom, deck])
   
+useEffect(() => {
+
+    checkGameStatus()
+
+}, [playerHealth, deck])
 
 
   function checkGameStatus() {
@@ -46,6 +51,9 @@ const [nextRoomDisabled, setNextRoomDisabled]= useState<boolean>(true)
     }
     if (playerHealth > 0 && deck.length <= 0) {
       updateGameData({ gameStatus: "win" });
+    }
+    if(playerHealth <1 && deck.length < 0){
+        updateGameData({ gameStatus: "lose" });
     }
   }
 
@@ -140,17 +148,14 @@ const [nextRoomDisabled, setNextRoomDisabled]= useState<boolean>(true)
 
           {currentRoom &&
             currentRoom.map((card: Card | null, index) => {
-              if (card) {
                 return (
                   <ActiveCard
                     key={index}
-                    imageUrl={card.imageUrl}
-                    handleCardSelection={() => handleCardSelection(card, index)}
+                    imageUrl={card ? card.imageUrl:"" }
+                    handleCardSelection={() => {if(card) handleCardSelection((card), index)}}
                   />
                 );
-              } else {
-                return <UsedCard imageUrl={"/cards/backs/back_0.png"} />;
-              }
+             
             })}
         </div>
 
