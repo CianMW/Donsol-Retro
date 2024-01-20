@@ -21,3 +21,9 @@
     gap:12px;
     justify-content:center;
 }
+
+.buttonContainer{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+}

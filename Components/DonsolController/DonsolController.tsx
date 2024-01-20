@@ -38,6 +38,12 @@ export function DonsolController() {
     });
   }
 
+
+  function resetDefault(){
+    updateGameData({gameStatus:'menu'})
+
+  }
+
   return (
     <div className={`window ${styles.donsolWrapper}`}>
       <div className="title-bar">
@@ -57,7 +63,7 @@ export function DonsolController() {
       <div className="separator"></div>
 
       <div className={`window-pane ${styles.mainContent}`}>
-        {gameStatus === 'play' && <GameMat />}
+        {gameStatus === 'play' && <GameMat resetDefault={resetDefault} />}
         {gameStatus==='menu' && <MainMenu startNewGame={startNewGame} />}
         {/* {gameStatus ===} */}
       </div>

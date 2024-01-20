@@ -11,8 +11,12 @@ import {
   handleShield,
 } from "@/app/api/gameFunctions";
 import { UsedCard } from "../UsedCard/UsedCard";
+interface Props{
+  resetDefault:() => void;
+}
 
-export function GameMat() {
+
+export function GameMat({resetDefault}:Props) {
 const [nextRoomDisabled, setNextRoomDisabled]= useState<boolean>(true)
 
   const {
@@ -102,8 +106,25 @@ useEffect(() => {
 
   }
 
-  function getNextRoom(){
-    if( currentRoom.filter(room => room).length <=1){
+  function escapeRoom(){
+    let remainingCards = currentRoom.filter(room => room);
+    let gameDataValue:Partial<GameData> ={};
+    const {room:newRoom, remainingDeck} = drawRoom(deck)
+    gameDataValue.currentRoom = newRoom;
+
+    gameDataValue.deck = [...remainingDeck]
+    for (const card of remainingCards) {
+      if(card){
+        gameDataValue.deck.push(card)
+      }
+    }
+    gameDataValue.isPreviousRoomEscaped = !isPreviousRoomEscaped;
+    updateGameData(gameDataValue)
+  }
+
+
+  function getNextRoom(isEscaping?:boolean){
+    if( currentRoom.filter(room => room).length <=1|| isEscaping){
         let remainingCard = currentRoom.filter(room => room)
         let gameDataValue:Partial<GameData> ={};
         const {room:newRoom, remainingDeck} = drawRoom(deck)
@@ -112,6 +133,11 @@ useEffect(() => {
         if(remainingCard.length > 0 && remainingCard[0]){
             gameDataValue.deck.push(remainingCard[0])
         }
+        if(isPreviousRoomEscaped){
+
+          gameDataValue.isPreviousRoomEscaped = false;
+        }
+
         updateGameData(gameDataValue)
     }
   }
@@ -159,12 +185,16 @@ useEffect(() => {
             })}
         </div>
 
-        <div>
+        <div className={styles.buttonContainer}>
           {/* Options */}
           {/* 1  card remaining = Next room */}
           <button className={"btn"} disabled={nextRoomDisabled} onClick={() => getNextRoom()}>Next Room</button>
           {/* >=1 card remaining = escape room */}
-          <button className={"btn"}>Escape Room</button>
+          <button className={"btn"} disabled={isPreviousRoomEscaped} onClick={() => escapeRoom()}>Escape Room</button>
+        </div>
+        <div className={styles.buttonContainer}>
+          {/* Options */}
+          <button className={"btn"}  onClick={() => resetDefault()}>Abandon Game</button>
         </div>
       </div>
     </div>
