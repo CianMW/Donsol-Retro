@@ -56,7 +56,7 @@ useEffect(() => {
     if (playerHealth > 0 && deck.length <= 0) {
       updateGameData({ gameStatus: "win" });
     }
-    if(playerHealth <1 && deck.length < 0){
+    if(playerHealth <1 && deck.length > 0){
         updateGameData({ gameStatus: "lose" });
     }
   }
@@ -76,6 +76,7 @@ useEffect(() => {
       card.suit === "Joker"
     ) {
       let cardVal = getCardValue(card);
+      console.log(cardVal)
       let postFightValues: Partial<GameData> = {};
       postFightValues = {
         ...handleMonster(card, playerHealth, equippedShield),

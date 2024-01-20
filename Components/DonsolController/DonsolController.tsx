@@ -5,6 +5,8 @@ import styles from "./DonsolController.module.css";
 import { GameContext } from "../Context/GameContext";
 import { initialiseGame } from "@/app/api/gameFunctions";
 import { GameMat } from "../GameMat.tsx/GameMat";
+import { EndGame } from "../EndGame/EndGame";
+import { start } from "repl";
 
 export function DonsolController() {
   const [cardState, setCardState] = useState<boolean>(true);
@@ -65,7 +67,18 @@ export function DonsolController() {
       <div className={`window-pane ${styles.mainContent}`}>
         {gameStatus === 'play' && <GameMat resetDefault={resetDefault} />}
         {gameStatus==='menu' && <MainMenu startNewGame={startNewGame} />}
-        {/* {gameStatus ===} */}
+        {gameStatus ==='win' || gameStatus ==='lose' && <EndGame 
+        startNewGame={startNewGame}
+        gameData={{    updateGameData,
+    deck,
+    currentRoom,
+    playerHealth,
+    equippedShield,
+    previousShieldValue,
+    isPreviousRoomEscaped,
+    gameMode,
+    gameStatus,
+    potionUsedPreviously}}/>}
       </div>
     </div>
   );
